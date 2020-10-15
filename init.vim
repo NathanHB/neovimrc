@@ -78,12 +78,3 @@ function! Formatonsave()
   pyf /usr/share/clang/clang-format.py
 endfunction
 autocmd BufWritePre *.h,*.cc,*.cpp,*.c call Formatonsave()
-
-" Header creator
-function HeaderFuncts()
-    let @a = ""
-    :%v/static/g/^\a\+ .*(.*)/s/\(.*\)/\1;/
-    :%v/static/g/^\a\+ .*(.*);/y A
-    u
-endfunction
-command HeaderFunc exec HeaderFuncts()
