@@ -2,33 +2,33 @@ set exrc
 set secure
 
 " ===== VIM PLUG =====
-call plug#begin(stdpath('data') . '/plugged')  " For Neovim: stdpath('data') . '/plugged'
-Plug 'tpope/vim-fugitive'                      " git integration in vim
-Plug 'jiangmiao/auto-pairs'                    " Automaticaly close parenthese etc...
-Plug 'bfrg/vim-cpp-modern'                     " c++ / c syntax hhighliting
-Plug 'preservim/nerdcommenter'                 " Simple shortcut to comment out lines
-Plug 'drewtempelmeyer/palenight.vim'           " Theme
-Plug 'vim-airline/vim-airline'                 " The bar at the bottom of screen
-Plug 'ntpeters/vim-better-whitespace'          " highlight bad whitespace
-Plug 'ycm-core/YouCompleteMe'                  " Autocomplete
-Plug 'SirVer/ultisnips'                        " Snippet engine
-Plug 'honza/vim-snippets'                      " Some snippets for ultisnips
-Plug 'lervag/vimtex'                           " Self explanatory
-Plug 'preservim/nerdtree'                      " NerdTree
-Plug 'godlygeek/tabular'                       " Align text and tables
-Plug 'mikelue/vim-maven-plugin'                " Maven commands from nvim
-"Plug 'dense-analysis/ale'                      " Syntax highlighter
-"Plug 'sbdchd/neoformat'                        " Format Prettymuch every file type
-"Plug 'kovetskiy/sxhkd-vim'                     " Syntax highliting and indent for sxhd config file (the file used for keymaps)
-"Plug 'JuliaEditorSupport/julia-vim'            " Julia support for Vim
-"Plug 'romainl/vim-qf'                          " Open the quickfix window when needed
-"Plug 'davidbeckingsale/writegood.vim'          " Highlight common errors in academic writing
-"Plug 'l04m33/vlime', {'rtp': 'vim/'}           " environment for lisp
-"Plug 'junegunn/goyo.vim'                       " Distraction Free Plugin
-"Plug 'junegunn/limelight.vim'                  " Slightly dim the line that are not under cursor
-"Plug 'vimwiki/vimwiki'                         " Pretty self explanatory
-"Plug 'plasticboy/vim-markdown'                 " Markdown syntax highlighting
-"Plug 'tpope/vim-dadbod'                        " Edit a database in VIM
+call plug#begin(stdpath('data') . '/plugged') " For Neovim: stdpath('data') . '/plugged'
+Plug 'tpope/vim-fugitive'                     " git integration in vim
+
+Plug 'jiangmiao/auto-pairs'                   " Automaticaly close parenthese etc...
+Plug 'preservim/nerdcommenter'                " Simple shortcut to comment out lines
+Plug 'ntpeters/vim-better-whitespace'         " highlight bad whitespace
+Plug 'godlygeek/tabular'                      " Align text and tables
+
+Plug 'bfrg/vim-cpp-modern'                    " c++ / c syntax hhighliting
+Plug 'lervag/vimtex'                          " Self explanatory
+Plug 'mikelue/vim-maven-plugin'               " Maven commands from nvim
+"Plug 'vimwiki/vimwiki'                       " Pretty self explanatory
+
+Plug 'drewtempelmeyer/palenight.vim'          " Theme
+Plug 'morhetz/gruvbox'                        " Theme
+Plug 'vim-airline/vim-airline'                " The bar at the bottom of screen
+
+Plug 'ycm-core/YouCompleteMe'                 " Autocomplete
+Plug 'SirVer/ultisnips'                       " Snippet engine
+Plug 'honza/vim-snippets'                     " Some snippets for ultisnips
+
+Plug 'preservim/nerdtree'                     " NerdTree
+
+Plug 'dense-analysis/ale'                     " Syntax highlighter
+Plug 'sbdchd/neoformat'                       " Format Prettymuch every file type
+
+Plug 'davidbeckingsale/writegood.vim'         " Highlight common errors in academic writing
 call plug#end()
 
 
@@ -41,6 +41,7 @@ set textwidth=80
 " Some python shit for indent and all
 set breakindent
 set list listchars=trail:·,tab:<->,eol:¬
+
 
 " ===== NICE SHORTCUTS AND MAPPINGS =====
 let mapleader = " "
@@ -59,9 +60,11 @@ let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " git fugitiv
 nmap <leader>gs :G<CR>
+nmap <leader>gc :Gcommit<CR>
 " YCM
-nmap <leader>gtd :YcmCompleter GoToDefinition<CR>
-nmap <leader>f :YcmCompleter FixIt<CR>
+nmap <leader>gt :YcmCompleter GoToDefinition<CR>
+nmap <leader>gf :YcmCompleter FixIt<CR>
+nmap <leader>ga :YcmCompleter Format<CR>
 
 " ===== AESTETHIC =====
 set cursorline
@@ -71,10 +74,10 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 " ===== COLORSCHEME =====
 set background=dark
-colorscheme palenight
-let g:airline_theme = "palenight"
+colorscheme gruvbox
+let g:airline_theme = "gruvbox"
 highlight Comment cterm=italic gui=italic
-let g:palenight_terminal_italics=1
+"let g:palenight_terminal_italics=1
 set termguicolors
 
 
@@ -89,6 +92,7 @@ set nu rnu " display relative number on left
 map q: <nop>
 nnoremap Q <nop>
 
+" When The buffer is not active, set the numbers to not relative
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu | set rnu   | endif
@@ -96,7 +100,6 @@ augroup numbertoggle
 augroup END
 
 " Search in those dirs when opening file under cursor
-let &path.="src/include,"
 set undodir=~/.vim/undodir
 set undofile
 set noswapfile
@@ -106,6 +109,8 @@ set incsearch
 " ===== BETTER_WHITE_SPACE =====
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
+let g:better_whitespace_ctermcolor='lightgrey'
+let g:better_whitespace_guicolor='grey'
 
 
 " ===== CLANG FORMATING =====
@@ -116,38 +121,30 @@ let g:strip_whitespace_on_save=1
   "pyf /usr/share/clang/clang-format.py
 "endfunction
 "autocmd BufWritePre *.hh,*.hxx,*.h,*.cc,*.cpp,*.c call Formatonsave()
-" Restore cursor position, window position, and last search after running a
-" command.
+ "Restore cursor position, window position, and last search after running a
+ "command.
 function! Preserve(command)
   " Save the last search.
   let search = @/
-
   " Save the current cursor position.
   let cursor_position = getpos('.')
-
   " Save the current window position.
   normal! H
   let window_position = getpos('.')
   call setpos('.', cursor_position)
-
   " Execute the command.
   execute a:command
-
   " Restore the last search.
   let @/ = search
-
   " Restore the previous window position.
   call setpos('.', window_position)
   normal! zt
-
   " Restore the previous cursor position.
   call setpos('.', cursor_position)
 endfunction
-
 " Specify path to your Uncrustify configuration file.
 let g:uncrustify_cfg_file_path =
     \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
-
 " Don't forget to add Uncrustify executable to $PATH (on Unix) or
 " %PATH% (on Windows) for this command to work.
 function! Uncrustify(language)
@@ -163,6 +160,7 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <C-t>r :NERDTreeRefreshRoot<CR>
 " Start NERDTree when Vim is started without file arguments.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
@@ -205,9 +203,3 @@ autocmd BufWinEnter * silent NERDTreeMirror
 
 "let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 "execute "set rtp+=" . g:opamshare . "/merlin/vim"
-
-
-" ===== GOYO / LIMELIGHT =====
-"let g:goyo_width=120
-"autocmd! User GoyoEnter Limelight
-"autocmd! User GoyoLeave Limelight!
